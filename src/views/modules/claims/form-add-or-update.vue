@@ -4,8 +4,8 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="记录人（这里指客户打电话接电话的人）" prop="claimFormRecorder">
-      <el-input v-model="dataForm.claimFormRecorder" placeholder="记录人（这里指客户打电话接电话的人）"></el-input>
+    <el-form-item label="记录人" prop="claimFormRecorder">
+      <el-input v-model="dataForm.claimFormRecorder" placeholder="记录人"></el-input>
     </el-form-item>
     <el-form-item label="事故原因" prop="claimFormCause">
       <el-input v-model="dataForm.claimFormCause" placeholder="事故原因"></el-input>
@@ -13,17 +13,17 @@
     <el-form-item label="事故地点" prop="claimFormSite">
       <el-input v-model="dataForm.claimFormSite" placeholder="事故地点"></el-input>
     </el-form-item>
-    <el-form-item label="险种id" prop="insuranceInserIncludeId">
+    <!-- <el-form-item label="险种id" prop="insuranceInserIncludeId">
       <el-input v-model="dataForm.insuranceInserIncludeId" placeholder="险种id"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="事故图片" prop="claimFormPicture">
       <el-input v-model="dataForm.claimFormPicture" placeholder="事故图片"></el-input>
     </el-form-item>
     <el-form-item label="勘探人" prop="claimFormExploration">
       <el-input v-model="dataForm.claimFormExploration" placeholder="勘探人"></el-input>
     </el-form-item>
-    <el-form-item label="勘探人手机号" prop="claimFormExplorationPhone">
-      <el-input v-model="dataForm.claimFormExplorationPhone" placeholder="勘探人手机号"></el-input>
+    <el-form-item label="投保人手机号" prop="claimFormExplorationPhone">
+      <el-input v-model="dataForm.claimFormExplorationPhone" placeholder="投保手手机号"></el-input>
     </el-form-item>
     <el-form-item label="定损id" prop="lossAssessmentId">
       <el-input v-model="dataForm.lossAssessmentId" placeholder="定损id"></el-input>
@@ -62,7 +62,7 @@
         },
         dataRule: {
           claimFormRecorder: [
-            { required: true, message: '记录人（这里指客户打电话接电话的人）不能为空', trigger: 'blur' }
+            { required: true, message: '记录人不能为空', trigger: 'blur' }
           ],
           claimFormCause: [
             { required: true, message: '事故原因不能为空', trigger: 'blur' }
@@ -80,7 +80,7 @@
             { required: true, message: '勘探人不能为空', trigger: 'blur' }
           ],
           claimFormExplorationPhone: [
-            { required: true, message: '勘探人手机号不能为空', trigger: 'blur' }
+            { required: true, message: '投保人手机号不能为空', trigger: 'blur' }
           ],
           lossAssessmentId: [
             { required: true, message: '定损id不能为空', trigger: 'blur' }
@@ -102,7 +102,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.claimFormId) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/form/info/${this.dataForm.claimFormId}`),
+              url: this.$http.adornUrl(`/claim/form/info/${this.dataForm.claimFormId}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -127,7 +127,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/generator/form/${!this.dataForm.claimFormId ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/claim/form/${!this.dataForm.claimFormId ? 'insertForm' : 'updateForm'}`),
               method: 'post',
               data: this.$http.adornData({
                 'claimFormId': this.dataForm.claimFormId || undefined,
@@ -144,13 +144,16 @@
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
+                console.log(
+                "添加后的数据",data
+                );
                 this.$message({
                   message: '操作成功',
                   type: 'success',
                   duration: 1500,
                   onClose: () => {
                     this.visible = false
-                    this.$emit('refreshDataList')
+                    this.$emit('refreshDataList',data)
                   }
                 })
               } else {
