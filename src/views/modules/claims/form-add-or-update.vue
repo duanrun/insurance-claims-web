@@ -116,7 +116,7 @@
                 this.dataForm.claimFormExplorationPhone = data.form.claimFormExplorationPhone
                 this.dataForm.lossAssessmentId = data.form.lossAssessmentId
                 this.dataForm.materialId = data.form.materialId
-                this.dataForm.indemnityId = data.form.indemnityId
+                this.dataForm.indemnityId = data.form.indemnityId//
               }
             })
           }
