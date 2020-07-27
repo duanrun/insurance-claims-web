@@ -84,12 +84,15 @@
          width="130">
       </el-table-column>
       <el-table-column
-        prop="lossAssessmentId"
         header-align="center"
         align="center"
-        label="定损id">
+        label="受理状态">
+          <template scope="props">
+              <span v-if="props.row.lossAssessmentId==1">已受理</span>
+              <span v-if="props.row.lossAssessmentId==0">受理中</span>
+          </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="materialId"
         header-align="center"
         align="center"
@@ -99,9 +102,9 @@
         prop="indemnityId"
         header-align="center"
         align="center"
-        label="赔款id">
-      </el-table-column>
-      <el-table-column type="expand">
+        label="赔款id"> -->
+      <!-- </el-table-column> -->
+      <el-table-column type="expand" @change="changeForm">
         <template scope="props">
           <el-form label-position="left" inline class="demo-table-expand" size="medium">
             <el-form-item label="投保人姓名:">
@@ -201,10 +204,15 @@
      selectionChangeHandle (val) {
       this.multipleSelection = val;
     },
-    changeForm(row,expandedRows,expanded){
+   async changeForm(row,expandedRows,expanded){
       console.log("点击了展开事件",row.insuranceInserIncludeId,expandedRows.length,expanded);
-          this.taoCanInfo(row.insuranceInserIncludeId);
-          this.getUserInfo(row.claimFormExplorationPhone);
+      if (expandedRows.length==1) {
+          await this.taoCanInfo(row.insuranceInserIncludeId);
+          await this.getUserInfo(row.claimFormExplorationPhone);
+      }else{
+        this.insuranceInserIncludeOption=null;
+      }
+         
     },
       // 获取数据列表
       getDataList (datas) {
@@ -354,6 +362,7 @@ async getAllData(){
     },
     //根据套餐id获取套餐信息
     taoCanInfo(id){
+      this.includeOption=[];
          return new Promise((resolve, reject)=>{
            this.$http({
            url: this.$http.adornUrl('/claim/form/getInclude'),

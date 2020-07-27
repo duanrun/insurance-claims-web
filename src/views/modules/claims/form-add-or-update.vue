@@ -28,9 +28,15 @@
     <el-form-item label="投保人手机号" prop="claimFormExplorationPhone">
       <el-input v-model="dataForm.claimFormExplorationPhone" placeholder="投保手手机号"></el-input>
     </el-form-item>
-    <!-- <el-form-item label="定损id" prop="lossAssessmentId">
-      <el-input v-model="dataForm.lossAssessmentId" placeholder="定损id"></el-input>
+     <el-form-item label="受理状态" prop="lossAssessmentId">
+      <!-- <el-input v-model="dataForm.lossAssessmentId" placeholder="定损id"></el-input> -->
+      <el-switch
+        v-model="dataForm.lossAssessmentId"
+        active-text="受理中"
+        inactive-text="已受理">
+    </el-switch>
     </el-form-item>
+    <!--
     <el-form-item label="理赔资料id" prop="materialId">
       <el-input v-model="dataForm.materialId" placeholder="理赔资料id"></el-input>
     </el-form-item>
@@ -89,7 +95,7 @@ import multiUpload from "@/components/upload/multiUpload"
             { required: true, message: '投保人手机号不能为空', trigger: 'blur' }
           ],
           lossAssessmentId: [
-            { required: true, message: '定损id不能为空', trigger: 'blur' }
+            { required: true, message: '是否受理不能为空', trigger: 'blur' }
           ],
           materialId: [
             { required: true, message: '理赔资料id不能为空', trigger: 'blur' }
@@ -133,7 +139,6 @@ import multiUpload from "@/components/upload/multiUpload"
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           console.log("上传的数据",this.dataForm);
-          
           if (valid) {
             this.$http({
               url: this.$http.adornUrl(`/claim/form/${!this.dataForm.claimFormId ? 'insertForm' : 'updateForm'}`),
@@ -148,7 +153,7 @@ import multiUpload from "@/components/upload/multiUpload"
                 'claimFormPictures': this.dataForm.claimFormPictures,
                 'claimFormExploration': this.dataForm.claimFormExploration,
                 'claimFormExplorationPhone': this.dataForm.claimFormExplorationPhone,
-                'lossAssessmentId': this.dataForm.lossAssessmentId,
+                'lossAssessmentId': this.dataForm.lossAssessmentId?0:1,
                 'materialId': this.dataForm.materialId,
                 'indemnityId': this.dataForm.indemnityId
               })
