@@ -37,9 +37,6 @@
     </el-switch>
     </el-form-item>
     <!--
-    <el-form-item label="理赔资料id" prop="materialId">
-      <el-input v-model="dataForm.materialId" placeholder="理赔资料id"></el-input>
-    </el-form-item>
     <el-form-item label="赔款id" prop="indemnityId">
       <el-input v-model="dataForm.indemnityId" placeholder="赔款id"></el-input>
     </el-form-item> -->
