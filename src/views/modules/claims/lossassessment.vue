@@ -1,14 +1,13 @@
 <template>
   <div class="mod-config">
-    <h1>定损记录</h1>
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
         <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="!isAuth('claim:lossassessment:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="!isAuth('claim:lossassessment:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('generator:lossassessment:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('generator:lossassessment:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -30,16 +29,16 @@
         label="定损id">
       </el-table-column>
       <el-table-column
-        prop="lossAssessmentFix duty"
+        prop="lossAssessmentFixDuty"
         header-align="center"
         align="center"
         label="交警定责">
       </el-table-column>
       <el-table-column
-        prop="lossAssessmentFix dutyUser"
+        prop="lossAssessmentFixDutyUser"
         header-align="center"
         align="center"
-        label="定损人员">
+        label="保险人员">
       </el-table-column>
       <el-table-column
         prop="indemnityId"

@@ -16,8 +16,11 @@
     <!-- <el-form-item label="险种id" prop="insuranceInserIncludeId">
       <el-input v-model="dataForm.insuranceInserIncludeId" placeholder="险种id"></el-input>
     </el-form-item> -->
-    <el-form-item label="事故图片" prop="claimFormPicture">
-      <el-input v-model="dataForm.claimFormPicture" placeholder="事故图片"></el-input>
+    <!-- <el-form-item label="事故图片" prop="claimFormPicture"> -->
+      <!-- <el-input v-model="dataForm.claimFormPicture" placeholder="事故图片"></el-input> -->
+      <el-form-item label="事故图片" prop="claimFormPictures">
+      <multi-upload v-model="dataForm.claimFormPictures"></multi-upload>
+    <!-- </el-form-item> -->
     </el-form-item>
     <el-form-item label="勘探人" prop="claimFormExploration">
       <el-input v-model="dataForm.claimFormExploration" placeholder="勘探人"></el-input>
@@ -25,7 +28,7 @@
     <el-form-item label="投保人手机号" prop="claimFormExplorationPhone">
       <el-input v-model="dataForm.claimFormExplorationPhone" placeholder="投保手手机号"></el-input>
     </el-form-item>
-    <el-form-item label="定损id" prop="lossAssessmentId">
+    <!-- <el-form-item label="定损id" prop="lossAssessmentId">
       <el-input v-model="dataForm.lossAssessmentId" placeholder="定损id"></el-input>
     </el-form-item>
     <el-form-item label="理赔资料id" prop="materialId">
@@ -33,7 +36,7 @@
     </el-form-item>
     <el-form-item label="赔款id" prop="indemnityId">
       <el-input v-model="dataForm.indemnityId" placeholder="赔款id"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -43,7 +46,9 @@
 </template>
 
 <script>
+import multiUpload from "@/components/upload/multiUpload"
   export default {
+    components: {multiUpload},
     data () {
       return {
         visible: false,
@@ -53,12 +58,13 @@
           claimFormCause: '',
           claimFormSite: '',
           insuranceInserIncludeId: '',
-          claimFormPicture: '',
+          claimFormPictures: [],
           claimFormExploration: '',
           claimFormExplorationPhone: '',
           lossAssessmentId: '',
           materialId: '',
-          indemnityId: ''
+          indemnityId: '',
+          claimImgs:[]
         },
         dataRule: {
           claimFormRecorder: [
@@ -111,7 +117,8 @@
                 this.dataForm.claimFormCause = data.form.claimFormCause
                 this.dataForm.claimFormSite = data.form.claimFormSite
                 this.dataForm.insuranceInserIncludeId = data.form.insuranceInserIncludeId
-                this.dataForm.claimFormPicture = data.form.claimFormPicture
+                this.dataForm.claimImgs = data.form.claimImgs
+                this.dataForm.claimFormPictures = data.form.claimFormPictures
                 this.dataForm.claimFormExploration = data.form.claimFormExploration
                 this.dataForm.claimFormExplorationPhone = data.form.claimFormExplorationPhone
                 this.dataForm.lossAssessmentId = data.form.lossAssessmentId
@@ -125,6 +132,8 @@
       // 表单提交
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
+          console.log("上传的数据",this.dataForm);
+          
           if (valid) {
             this.$http({
               url: this.$http.adornUrl(`/claim/form/${!this.dataForm.claimFormId ? 'insertForm' : 'updateForm'}`),
@@ -135,7 +144,8 @@
                 'claimFormCause': this.dataForm.claimFormCause,
                 'claimFormSite': this.dataForm.claimFormSite,
                 'insuranceInserIncludeId': this.dataForm.insuranceInserIncludeId,
-                'claimFormPicture': this.dataForm.claimFormPicture,
+                'claimImgs': this.dataForm.claimImgs,
+                'claimFormPictures': this.dataForm.claimFormPictures,
                 'claimFormExploration': this.dataForm.claimFormExploration,
                 'claimFormExplorationPhone': this.dataForm.claimFormExplorationPhone,
                 'lossAssessmentId': this.dataForm.lossAssessmentId,
@@ -147,6 +157,7 @@
                 console.log(
                 "添加后的数据",data
                 );
+                this.dataForm.claimFormPictures=[];
                 this.$message({
                   message: '操作成功',
                   type: 'success',

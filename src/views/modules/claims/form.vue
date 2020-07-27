@@ -64,12 +64,12 @@
         align="center"
         label="险种id">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="claimFormPicture"
         header-align="center"
         align="center"
         label="事故图片">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="claimFormExploration"
         header-align="center"
@@ -122,6 +122,9 @@
                 <!-- <el-row v-for="(carInsur,index) in carInsurs" v-if="index in includeOption" style="width:100%;">
                      
                 </el-row> -->
+            </el-form-item>
+            <el-form-item>
+                <img v-for="item in props.row.claimImgs" :src="item.claimImgUri" width="220" height="220" :key="item" alt="">
             </el-form-item>
             <!-- <el-form-item label="所买保险额度:" label-width="150px;">
                   <span>{{ props.row.date }}</span>
@@ -217,7 +220,7 @@
             'key': this.dataForm.key
           })
         }).then(({data}) => {
-          console.log("返回的数据",data);
+          console.log("返回的数据",data.page.list);
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
