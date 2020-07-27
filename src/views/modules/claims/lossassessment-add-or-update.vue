@@ -4,11 +4,11 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="交警定责" prop="lossAssessmentFix duty">
-      <el-input v-model="dataForm.lossAssessmentFixduty" placeholder="交警定责"></el-input>
+    <el-form-item label="交警定责（这里就是指判断双方责任比如46、37等）" prop="lossAssessmentFix duty">
+      <el-input v-model="dataForm.lossAssessmentFixDuty" placeholder="交警定责（这里就是指判断双方责任比如46、37等）"></el-input>
     </el-form-item>
-    <el-form-item label="定损人员" prop="lossAssessmentFix dutyUser">
-      <el-input v-model="dataForm.lossAssessmentFixdutyUser" placeholder="定损人员"></el-input>
+    <el-form-item label="保险人员（指的是负责定损的人员）" prop="lossAssessmentFix dutyUser">
+      <el-input v-model="dataForm.lossAssessmentFixDutyUser" placeholder="保险人员（指的是负责定损的人员）"></el-input>
     </el-form-item>
     <el-form-item label="赔款id" prop="indemnityId">
       <el-input v-model="dataForm.indemnityId" placeholder="赔款id"></el-input>
@@ -28,16 +28,16 @@
         visible: false,
         dataForm: {
           clossAssessmentId: 0,
-          lossAssessmentFixduty: '',
-          lossAssessmentFixdutyUser: '',
+          lossAssessmentFixDuty: '',
+          lossAssessmentFixDutyUser: '',
           indemnityId: ''
         },
         dataRule: {
-          lossAssessmentFixduty: [
-            { required: true, message: '交警定责不能为空', trigger: 'blur' }
+          lossAssessmentFixDuty: [
+            { required: true, message: '交警定责（这里就是指判断双方责任比如46、37等）不能为空', trigger: 'blur' }
           ],
-          lossAssessmentFixdutyUser: [
-            { required: true, message: '定损人员不能为空', trigger: 'blur' }
+          lossAssessmentFixDutyUser: [
+            { required: true, message: '保险人员（指的是负责定损的人员）不能为空', trigger: 'blur' }
           ],
           indemnityId: [
             { required: true, message: '赔款id不能为空', trigger: 'blur' }
@@ -58,8 +58,8 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.lossAssessmentFixduty = data.lossAssessment.lossAssessmentFixduty
-                this.dataForm.lossAssessmentFixdutyUser = data.lossAssessment.lossAssessmentFixdutyUser
+                this.dataForm.lossAssessmentFixDuty = data.lossAssessment.lossAssessmentFixDuty
+                this.dataForm.lossAssessmentFixDutyUser = data.lossAssessment.lossAssessmentFixDutyUser
                 this.dataForm.indemnityId = data.lossAssessment.indemnityId
               }
             })
@@ -75,8 +75,8 @@
               method: 'post',
               data: this.$http.adornData({
                 'clossAssessmentId': this.dataForm.clossAssessmentId || undefined,
-                'lossAssessmentFix duty': this.dataForm.lossAssessmentFixduty,
-                'lossAssessmentFix dutyUser': this.dataForm.lossAssessmentFixdutyUser,
+                'lossAssessmentFixDuty': this.dataForm.lossAssessmentFixDuty,
+                'lossAssessmentFixDutyUser': this.dataForm.lossAssessmentFixDutyUser,
                 'indemnityId': this.dataForm.indemnityId
               })
             }).then(({data}) => {
